@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Birthday suprise</title>
+    <style>
+        /* Reset and Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Prevents scrolling during the blast */
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: #0b032d; /* Deep midnight blue */
+        }
+
+        /* Centered Layout Container */
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background: radial-gradient(circle at center, #1b1464 0%, #0b032d 100%);
+        }
+
+        /* The Card Frame */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px; /* Perfect for mobile and desktop */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        h1 {
+            color: #ff75a0;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 117, 160, 0.3);
+        }
+
+        p {
+            color: #e0e0e0;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+
+        /* Button Styling */
+        .btn-container {
+            margin-top: 10px;
+        }
+
+        #blastBtn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        
+        #finalMessage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            text-align: center;
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 0 20px #ff00de, 0 0 40px #ff00de;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes popOut {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+    
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 99;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5rem; }
+            p { font-size: 0.95rem; }
+            #finalMessage { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper" id="mainWrapper">
+    <div class="card" id="birthdayCard">
+        <h1>Happy Birthday, you idiot! 🎂</h1>
+        <p>Happy birthday sweetheart! May this year bring you happiness, achievements, and blessings.</p>
+        <p>Remove all negative energy and negative people and thoughts. You deserve happiness.</p>
+        <p> Take care. ❤️</p>
+        
+        <div class="btn-container">
+            <button id="blastBtn">Click for Surprise</button>
+        </div>
+    </div>
+</div>
+
+<div id="finalMessage"> once again HAPPY BIRTHDAY cutiee 💖</div>
+
+<script>
+    const btn = document.getElementById('blastBtn');
+    const card = document.getElementById('birthdayCard');
+    const finalMsg = document.getElementById('finalMessage');
+
+    btn.addEventListener('click', () => {
+        
+        card.style.opacity = '0';
+        setTimeout(() => card.style.display = 'none', 500);
+
+        
+        for (let i = 0; i < 120; i++) {
+            createParticle();
+        }
+
+        
+        setTimeout(() => {
+            finalMsg.style.opacity = '1';
+            finalMsg.style.animation = "popOut 1s forwards";
+        }, 300);
+    });
+
+    function createParticle() {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        
+        // Random size and colors
+        const size = Math.random() * 8 + 4 + 'px';
+        const colors = ['#FF1493', '#00BFFF', '#FFD700', '#ADFF2F', '#FF4500', '#FFFFFF'];
+        
+        p.style.width = size;
+        p.style.height = size;
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Start from center
+        p.style.left = '50vw';
+        p.style.top = '50vh';
+        
+        document.body.appendChild(p);
+
+        // Explode outward
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 12 + 5;
+        const destinationX = Math.cos(angle) * (Math.random() * 300 + 100);
+        const destinationY = Math.sin(angle) * (Math.random() * 300 + 100);
+
+        const anim = p.animate([
+            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+            { transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, opacity: 0 }
+        ], {
+            duration: 1000 + Math.random() * 1000,
+            easing: 'cubic-bezier(0.1, 1, 0.1, 1)'
+        });
+
+        anim.onfinish = () => p.remove();
+    }
+</script>
+
+</body>
+</html>
